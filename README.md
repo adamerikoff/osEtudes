@@ -11,3 +11,8 @@
 | [shell](./shell)     | A custom command-line shell implementation.                                                          |
 
 ---
+
+## Resources
+
+- [destroyallsoftware](https://www.destroyallsoftware.com/)
+
