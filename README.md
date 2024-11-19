@@ -8,6 +8,6 @@
 
 | **Name**             | **Description**                                                                                      |
 |----------------------|------------------------------------------------------------------------------------------------------|
-| [`shell`](./shell)   | A custom command-line shell implementation.                                                          |
+| [shell](./shell)     | A custom command-line shell implementation.                                                          |
 
 ---
