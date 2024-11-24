@@ -1,7 +1,17 @@
-ORG 0x7c00           ; The memory address where the BIOS loads the bootloader.
-BITS 16              ; Specifies that the code is for 16-bit mode (real mode).
+ORG 0
+BITS 16
+
+jmp 0x7c0:start
 
 start:
+    cli
+    mov ax, 0x7c0
+    mov ds, ax
+    mov es, ax
+    mov ax, 0x00
+    mov ss, ax
+    mov sp, 0x7c00
+    sli
     mov si, message   ; Load the address of the 'message' string into the SI register (source index).
     call print        ; Call the 'print' subroutine to display the message on the screen.
     jmp $             ; Infinite loop to halt execution after printing the message.
@@ -26,7 +36,7 @@ print_char:
     ret               ; Return from the 'print_char' subroutine.
 
 ; Null-terminated message string to display on the screen.
-message: db 'Hello World', 0   ; Define the string "Hello World" followed by a null byte (0).
+message: db 'Hello World!', 0   ; Define the string "Hello World" followed by a null byte (0).
 
 ; Fill the remaining space in the boot sector with zeros.
 ; The boot sector must be exactly 512 bytes.
