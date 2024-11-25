@@ -66,8 +66,14 @@ void print(const char* str)
     }
 }
 
+extern void problem();
+
 void kernel_main()
 {
     terminal_initialize();
     print("Hello world!\ntest");
+
+    idt_init();
+
+    outb(0x60, 0xff);
 }
