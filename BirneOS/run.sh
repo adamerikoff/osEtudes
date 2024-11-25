@@ -13,8 +13,10 @@ if [ $? -ne 0 ]; then
     echo "Compilation failed. Please check your Assembly code for errors."
     exit 1
 fi
-
 echo "Compilation successful. Output binary: $BIN_FILE"
+
+dd if=./message.txt >> ./boot.bin
+dd if=/dev/zero bs=512 count=1 >> ./boot.bin
 
 # Step 2: Run the bootloader with QEMU
 echo "Running $BIN_FILE in QEMU..."
