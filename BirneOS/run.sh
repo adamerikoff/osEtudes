@@ -1,8 +1,18 @@
 #!/bin/bash
 
-# Set file paths
-ASM_FILE="boot.asm"
-BIN_FILE="boot.bin"
+# Define directory paths
+BIN_FOLDER="./bin"
+BUILD_FOLDER="./build"
+SRC_FOLDER="./src"
+
+BOOT_FOLDER="$SRC_FOLDER/boot"
+
+ASM_FILE="$BOOT_FOLDER/boot.asm"
+BIN_FILE="$BIN_FOLDER/boot.bin"
+
+# Ensure required directories exist
+mkdir -p "$BIN_FOLDER"
+mkdir -p "$BUILD_FOLDER"
 
 # Step 1: Assemble the code
 echo "Compiling $ASM_FILE..."
@@ -15,9 +25,9 @@ if [ $? -ne 0 ]; then
 fi
 echo "Compilation successful. Output binary: $BIN_FILE"
 
-dd if=./message.txt >> ./boot.bin
-dd if=/dev/zero bs=512 count=1 >> ./boot.bin
-
 # Step 2: Run the bootloader with QEMU
 echo "Running $BIN_FILE in QEMU..."
 qemu-system-x86_64 -hda "$BIN_FILE"
+
+# Exit script
+exit 0
