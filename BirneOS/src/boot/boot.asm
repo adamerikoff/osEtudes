@@ -67,6 +67,11 @@ load32:
     mov ss, ax
     mov ebp, 0x00200000
     mov esp, ebp
+
+    in al, 0x92
+    or al, 2
+    out 0x92, al
+    
     jmp $
 
 print:
