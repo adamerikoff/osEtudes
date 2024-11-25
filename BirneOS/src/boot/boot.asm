@@ -55,7 +55,7 @@ gdt_end:
 
 gdt_descriptor:
     dw gdt_end - gdt_start-1
-    dw gdt_start
+    dd gdt_start
 
 [BITS 32]
 load32:
@@ -63,6 +63,7 @@ load32:
     mov ecx, 100
     mov edi, 0x0100000
     call ata_lba_read
+    
     jmp CODE_SEG:0x0100000
 
 ata_lba_read:
@@ -97,11 +98,13 @@ ata_lba_read:
     in al, dx
     test al, 8
     jz .try_again
+
     mov ecx, 256
     mov dx, 0x1F0
     rep insw
     pop ecx
     loop .next_sector
+
     ret
 
 
