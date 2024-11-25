@@ -1,7 +1,6 @@
 [BITS 32]
 
 global _start
-global problem
 extern kernel_main
 
 CODE_SEG equ 0x08
@@ -17,18 +16,23 @@ _start:
     mov ebp, 0x00200000
     mov esp, ebp
 
-    ; Enable the A20 line
     in al, 0x92
     or al, 2
     out 0x92, al
 
+    mov al, 00010001b
+    out 0x20, al
+
+    mov al, 0x20 
+    out 0x21, al
+
+    mov al, 00000001b
+    out 0x21, al
+
+    sti
+
     call kernel_main
 
     jmp $
-
-problem:
-    mov eax, 0
-    div eax
-
 
 times 512-($ - $$) db 0

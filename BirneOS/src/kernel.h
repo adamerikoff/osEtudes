@@ -16,5 +16,6 @@ void terminal_writechar(char c, char colour);
 void terminal_initialize();
 size_t strlen(const char* str);
 void print(const char* str);
+void int21h_handler();
 
 #endif

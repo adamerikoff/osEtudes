@@ -58,13 +58,13 @@ gdt_descriptor:
     dd gdt_start
 
 [BITS 32]
-load32:
+ load32:
     mov eax, 1
     mov ecx, 100
     mov edi, 0x0100000
     call ata_lba_read
-    
     jmp CODE_SEG:0x0100000
+
 
 ata_lba_read:
     mov ebx, eax
@@ -72,20 +72,25 @@ ata_lba_read:
     or eax, 0xE0
     mov dx, 0x1F6
     out dx, al
+
     mov eax, ecx
     mov dx, 0x1F2
     out dx, al
+
     mov eax, ebx
     mov dx, 0x1F3
     out dx, al
+
     mov dx, 0x1F4
     mov eax, ebx
     shr eax, 8
     out dx, al
+
     mov dx, 0x1F5
     mov eax, ebx
     shr eax, 16
     out dx, al
+
     mov dx, 0x1f7
     mov al, 0x20
     out dx, al
@@ -98,15 +103,12 @@ ata_lba_read:
     in al, dx
     test al, 8
     jz .try_again
-
     mov ecx, 256
     mov dx, 0x1F0
     rep insw
     pop ecx
     loop .next_sector
-
     ret
-
 
 times 510-($ - $$) db 0
 dw 0xAA55
