@@ -1,0 +1,31 @@
+// Rectangle class definition
+class Rectangle {
+  def constructor(width, height) {
+    this.width = width;
+    this.height = height;
+  }
+
+  def area() {
+    return this.width * this.height;
+  }
+
+  def perimeter() {
+    return 2 * (this.width + this.height);
+  }
+}
+
+// Square class definition (inherits from Rectangle)
+class Square extends Rectangle {
+  def constructor(side) {
+    super(side, side);  // A square is a rectangle with equal width and height
+  }
+
+  def area() {
+    return this.width * this.width;  // Override to calculate square area
+  }
+}
+
+// Creating a new instance of Square
+let mySquare = new Square(5);
+console.log(mySquare.area());        // Output: 25
+console.log(mySquare.perimeter());   // Output: 20

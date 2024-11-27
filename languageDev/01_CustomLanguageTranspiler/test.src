@@ -1,0 +1,3 @@
+def z(x,y)
+    multiply(x,y)
+end

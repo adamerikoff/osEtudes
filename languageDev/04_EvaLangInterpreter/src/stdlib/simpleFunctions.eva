@@ -1,0 +1,13 @@
+(module simpleFunctions
+  (begin
+    (def absolute (x)
+      (if (< x 0)
+        (- 0 x)
+        x))
+
+    (def add (a b)
+      (+ a b))
+
+    (def multiply (a b)
+      (* a b))
+  ))

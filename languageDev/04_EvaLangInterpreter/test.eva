@@ -1,0 +1,6 @@
+(begin
+	(var x 10)
+	(var y 10)
+	(set y 99 )
+	(print (+ y x))
+)
