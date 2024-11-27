@@ -1,4 +1,4 @@
-FILES = ./build/kernel.asm.o ./build/kernel.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o
+FILES = ./build/kernel.asm.o ./build/kernel.o ./build/idt/idt.asm.o ./build/idt/idt.o ./build/memory/memory.o ./build/io/io.asm.o ./build/memory/heap/heap.o ./build/memory/heap/kheap.o
 INCLUDES = -I./src
 FLAGS = -g -ffreestanding -falign-jumps -falign-functions -falign-labels -falign-loops -fstrength-reduce -fomit-frame-pointer -finline-functions -Wno-unused-function -fno-builtin -Werror -Wno-unused-label -Wno-cpp -Wno-unused-parameter -nostdlib -nodefaultlibs -Wall -O0 -Iinc
 
@@ -13,26 +13,40 @@ all: ./bin/boot.bin ./bin/kernel.bin
 	i686-elf-gcc $(FLAGS) -T ./src/linker.ld -o ./bin/kernel.bin -ffreestanding -O0 -nostdlib ./build/kernelfull.o
 
 ./bin/boot.bin: ./src/boot/boot.asm
+	mkdir -p ./bin
 	nasm -f bin ./src/boot/boot.asm -o ./bin/boot.bin
 
 ./build/kernel.asm.o: ./src/kernel.asm
+	mkdir -p ./build
 	nasm -f elf -g ./src/kernel.asm -o ./build/kernel.asm.o
 
 ./build/kernel.o: ./src/kernel.c
+	mkdir -p ./build
 	i686-elf-gcc $(INCLUDES) $(FLAGS) -std=gnu99 -c ./src/kernel.c -o ./build/kernel.o
 
 ./build/idt/idt.asm.o: ./src/idt/idt.asm
+	mkdir -p ./build/idt
 	nasm -f elf -g ./src/idt/idt.asm -o ./build/idt/idt.asm.o
 
 ./build/idt/idt.o: ./src/idt/idt.c
+	mkdir -p ./build/idt
 	i686-elf-gcc $(INCLUDES) -I.src/idt $(FLAGS) -std=gnu99 -c ./src/idt/idt.c -o ./build/idt/idt.o
 
 ./build/memory/memory.o: ./src/memory/memory.c
+	mkdir -p ./build/memory
 	i686-elf-gcc $(INCLUDES) -I.src/memory $(FLAGS) -std=gnu99 -c ./src/memory/memory.c -o ./build/memory/memory.o
 
 ./build/io/io.asm.o: ./src/io/io.asm
+	mkdir -p ./build/io
 	nasm -f elf -g ./src/io/io.asm -o ./build/io/io.asm.o
 
+./build/memory/heap/heap.o: ./src/memory/heap/heap.c
+	mkdir -p ./build/memory/heap
+	i686-elf-gcc $(INCLUDES) -I.src/memory/heap $(FLAGS) -std=gnu99 -c ./src/memory/heap/heap.c -o ./build/memory/heap/heap.o
+
+./build/memory/heap/kheap.o: ./src/memory/heap/kheap.c
+	mkdir -p ./build/memory/heap
+	i686-elf-gcc $(INCLUDES) -I.src/memory/kheap $(FLAGS) -std=gnu99 -c ./src/memory/heap/kheap.c -o ./build/memory/heap/kheap.o
 
 clean:
 	rm -rf ./bin/boot.bin

@@ -22,4 +22,7 @@ void idt_init();
 void idt_set(int interrupt_no, void* address);
 void idt_zero();
 
+extern void enable_interrupts();
+extern void disable_interrupts();
+
 #endif

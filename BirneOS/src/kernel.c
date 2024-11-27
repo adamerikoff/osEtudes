@@ -71,5 +71,10 @@ void kernel_main()
     terminal_initialize();
     print("Hello world!\ntest");
 
+    kheap_init();
+
     idt_init();
+
+    enable_interrupts();
+
 }

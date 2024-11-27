@@ -9,6 +9,7 @@
 
 #include "./idt/idt.h"
 #include "./io/io.h"
+#include "./memory/heap/kheap.h"
 
 uint16_t terminal_make_char(char c, char colour);
 void terminal_putchar(int x, int y, char c, char colour);
