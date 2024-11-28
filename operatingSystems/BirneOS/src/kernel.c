@@ -51,12 +51,20 @@ void print(const char* str) {
 
 static struct paging_4gb_chunk* kernel_chunk = 0;
 
+void panic(const char* msg) {
+    print(msg);
+    while(1) {}
+}
+
 void kernel_main() {
     terminal_initialize();
     print("Hello world!\ntest");
 
     // Initialize the heap
     kheap_init();
+
+    // Initialize filesystems
+    fs_init();
 
     // Search and initialize the disks
     disk_search_and_init();
@@ -76,9 +84,13 @@ void kernel_main() {
     // Enable the system interrupts
     enable_interrupts();
 
-    struct disk_stream* stream = diskstreamer_new(0);
-    diskstreamer_seek(stream, 0x201);
-    unsigned char c = 0;
-    diskstreamer_read(stream, &c, 1);
+    int fd = fopen("0:/hello.txt", "r");
+    if (fd) {
+        struct file_stat s;
+        fstat(fd, &s);
+        fclose(fd);
+
+        print("testing\n");
+    }
     while(1) {}
 }

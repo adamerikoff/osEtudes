@@ -27,17 +27,22 @@ void disk_search_and_init() {
     memset(&disk, 0, sizeof(disk));
     disk.type = BIRNEOS_DISK_TYPE_REAL;
     disk.sector_size = BIRNEOS_SECTOR_SIZE;
+    disk.id = 0;
+    disk.filesystem = fs_resolve(&disk);
 }
 
 struct disk* disk_get(int index) {
     if (index != 0)
         return 0;
+    
     return &disk;
 }
 
 int disk_read_block(struct disk* idisk, unsigned int lba, int total, void* buf) {
-    if (idisk != &disk) {
+    if (idisk != &disk)
+    {
         return -EIO;
     }
+
     return disk_read_sector(lba, total, buf);
 }
