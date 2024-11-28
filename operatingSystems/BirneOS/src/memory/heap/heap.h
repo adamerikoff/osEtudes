@@ -24,6 +24,7 @@ typedef struct heap_table {
 
 typedef struct heap {
     heap_table* table;
+    // Start address of the heap data pool
     void* saddr;
 } heap;
 

@@ -10,13 +10,10 @@
 #include "./idt/idt.h"
 #include "./io/io.h"
 #include "./memory/heap/kheap.h"
+#include "./memory/paging/paging.h"
+#include "./disk/disk.h"
 
-uint16_t terminal_make_char(char c, char colour);
-void terminal_putchar(int x, int y, char c, char colour);
-void terminal_writechar(char c, char colour);
-void terminal_initialize();
-size_t strlen(const char* str);
+void kernel_main();
 void print(const char* str);
-void int21h_handler();
 
 #endif

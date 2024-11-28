@@ -45,7 +45,6 @@ void terminal_initialize()
     }   
 }
 
-
 size_t strlen(const char* str)
 {
     size_t len = 0;
@@ -66,15 +65,32 @@ void print(const char* str)
     }
 }
 
+static paging_4gb_chunk* kernel_chunk = 0;
+
 void kernel_main()
 {
     terminal_initialize();
     print("Hello world!\ntest");
 
+    // Initialize the heap
     kheap_init();
 
+    // Initialize the interrupt descriptor table
     idt_init();
 
-    enable_interrupts();
+    // Setup paging
+    kernel_chunk = paging_new_4gb(PAGING_IS_WRITABLE | PAGING_IS_PRESENT | PAGING_ACCESS_FROM_ALL);
+    
+    // Switch to kernel paging chunk
+    paging_switch(paging_4gb_chunk_get_directory(kernel_chunk));
 
+    // Enable paging
+    enable_paging();
+
+
+    char buf[512];
+    disk_read_sector(0, 1, buf);
+
+    // Enable the system interrupts
+    enable_interrupts();
 }
