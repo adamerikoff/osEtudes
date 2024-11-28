@@ -4,25 +4,22 @@ uint16_t* video_mem = 0;
 uint16_t terminal_row = 0;
 uint16_t terminal_col = 0;
 
-uint16_t terminal_make_char(char c, char colour)
-{
+uint16_t terminal_make_char(char c, char colour) {
     return (colour << 8) | c;
 }
 
-void terminal_putchar(int x, int y, char c, char colour)
-{
+void terminal_putchar(int x, int y, char c, char colour) {
     video_mem[(y * VGA_WIDTH) + x] = terminal_make_char(c, colour);
 }
 
-void terminal_writechar(char c, char colour)
-{
+void terminal_writechar(char c, char colour) {
     if (c == '\n')
     {
         terminal_row += 1;
         terminal_col = 0;
         return;
     }
-    
+
     terminal_putchar(terminal_col, terminal_row, c, colour);
     terminal_col += 1;
     if (terminal_col >= VGA_WIDTH)
@@ -31,8 +28,7 @@ void terminal_writechar(char c, char colour)
         terminal_row += 1;
     }
 }
-void terminal_initialize()
-{
+void terminal_initialize() {
     video_mem = (uint16_t*)(0xB8000);
     terminal_row = 0;
     terminal_col = 0;
@@ -45,19 +41,7 @@ void terminal_initialize()
     }   
 }
 
-size_t strlen(const char* str)
-{
-    size_t len = 0;
-    while(str[len])
-    {
-        len++;
-    }
-
-    return len;
-}
-
-void print(const char* str)
-{
+void print(const char* str) {
     size_t len = strlen(str);
     for (int i = 0; i < len; i++)
     {
@@ -65,15 +49,17 @@ void print(const char* str)
     }
 }
 
-static paging_4gb_chunk* kernel_chunk = 0;
+static struct paging_4gb_chunk* kernel_chunk = 0;
 
-void kernel_main()
-{
+void kernel_main() {
     terminal_initialize();
     print("Hello world!\ntest");
 
     // Initialize the heap
     kheap_init();
+
+    // Search and initialize the disks
+    disk_search_and_init();
 
     // Initialize the interrupt descriptor table
     idt_init();
@@ -86,11 +72,13 @@ void kernel_main()
 
     // Enable paging
     enable_paging();
-
-
-    char buf[512];
-    disk_read_sector(0, 1, buf);
-
+    
     // Enable the system interrupts
     enable_interrupts();
+
+    struct disk_stream* stream = diskstreamer_new(0);
+    diskstreamer_seek(stream, 0x201);
+    unsigned char c = 0;
+    diskstreamer_read(stream, &c, 1);
+    while(1) {}
 }

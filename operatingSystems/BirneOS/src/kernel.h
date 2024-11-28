@@ -11,7 +11,12 @@
 #include "./io/io.h"
 #include "./memory/heap/kheap.h"
 #include "./memory/paging/paging.h"
+#include "./string/string.h"
 #include "./disk/disk.h"
+#include "./fs/pparser.h"
+#include "./disk/streamer.h"
+
+#define BIRNEOS_MAX_PATH 108
 
 void kernel_main();
 void print(const char* str);

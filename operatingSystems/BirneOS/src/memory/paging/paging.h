@@ -17,18 +17,18 @@
 #define PAGING_TOTAL_ENTRIES_PER_TABLE 1024
 #define PAGING_PAGE_SIZE 4096
 
-typedef struct {
+struct paging_4gb_chunk
+{
     uint32_t* directory_entry;
-} paging_4gb_chunk;
+};
 
-extern void paging_load_directory(uint32_t* directory);
-extern void enable_paging();
-
-paging_4gb_chunk* paging_new_4gb(uint8_t flags);
+struct paging_4gb_chunk* paging_new_4gb(uint8_t flags);
 void paging_switch(uint32_t* directory);
-uint32_t* paging_4gb_chunk_get_directory(paging_4gb_chunk* chunk);
+void enable_paging();
 
-int paging_set(uint32_t* directory, void* virtual, uint32_t val);
+int paging_set(uint32_t* directory, void* virt, uint32_t val);
 bool paging_is_aligned(void* addr);
+
+uint32_t* paging_4gb_chunk_get_directory(struct paging_4gb_chunk* chunk);
 
 #endif
